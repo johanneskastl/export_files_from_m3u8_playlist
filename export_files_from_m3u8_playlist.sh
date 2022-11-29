@@ -90,57 +90,41 @@ echo ""
 # store the number of files found
 number_of_files="$(wc -l <<<"${referenced_files}")"
 
-if [[ "${enable_sorting}" == "true" ]]
-then
+[[ "${enable_sorting}" == "true" ]] && echo "Copying while keeping the sorting"
+list_index=1
 
-    echo "Copying while keeping the sorting"
-    list_index=1
-    # loop over lines from playlist
-    while read -r music_file
-    do
-        echo "Entry number: ${list_index}"
+# loop over lines from playlist
+while read -r music_file
+do
+
+    if [[ "${enable_sorting}" == "true" ]]
+    then
         if [[ "${number_of_files}" -lt 100 ]]
         then
             prefix="$(printf "%02d" "${list_index}")_"
         else
             prefix="$(printf "%03d" "${list_index}")_"
         fi
-        echo "---"
-        echo "Working on ${music_file}"
-        if [[ -f "${music_file}" ]]
-        then
-            # copy file, if not yet present
-            [[ -f "./${playlist_folder_name}/${prefix}$(basename "${music_file}")" ]] || \
-                ${cp_command} "${music_file}" "./${playlist_folder_name}/${prefix}$(basename "${music_file}")"
-        else
-            echo "Error, file ${music_file} not found..."
-            exit 21
-        fi
-        list_index=$(( "${list_index}" + 1))
+    else
+        prefix=''
+    fi
 
-    done <<< "${referenced_files}"
+    echo "---"
+    echo "Working on ${music_file}"
+    [[ "${enable_sorting}" == "true" ]] && echo "Entry number: ${list_index}"
 
-else
+    if [[ -f "${music_file}" ]]
+    then
+        # copy file, if not yet present
+        [[ -f "./${playlist_folder_name}/${prefix}$(basename "${music_file}")" ]] || \
+            ${cp_command} "${music_file}" "./${playlist_folder_name}/${prefix}$(basename "${music_file}")"
+    else
+        echo "Error, file ${music_file} not found..."
+        exit 21
+    fi
+    list_index=$(( "${list_index}" + 1))
 
-    # loop over lines from playlist
-    while read -r music_file
-    do
-
-        echo "---"
-        echo "Working on ${music_file}"
-        if [[ -f "${music_file}" ]]
-        then
-            # copy file, if not yet present
-            [[ -f "./${playlist_folder_name}/$(basename "${music_file}")" ]] || \
-                ${cp_command} "${music_file}" "./${playlist_folder_name}"
-        else
-            echo "Error, file ${music_file} not found..."
-            exit 21
-        fi
-
-    done <<< "${referenced_files}"
-
-fi # if-condition sorting yes/no
+done <<< "${referenced_files}"
 
 echo ""
 
