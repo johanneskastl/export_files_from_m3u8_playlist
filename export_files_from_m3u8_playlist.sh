@@ -13,7 +13,7 @@ command -v dos2unix > /dev/null || {
 cp_command='cp -a'
 
 # parse arguments
-while getopts vl opt
+while getopts vls opt
 do
     case ${opt} in
         l)
@@ -24,6 +24,10 @@ do
         v)
             # add cp option -v
             cp_command+='v'
+        ;;
+
+        s)
+            enable_sorting='true'
         ;;
 
         *)
