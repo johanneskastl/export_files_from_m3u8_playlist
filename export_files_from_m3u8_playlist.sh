@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# propagate errors even through pipes
+set -o pipefail
+
 command -v dos2unix > /dev/null || {
     echo "Command dos2unix not found, aborting..."
     exit 7
