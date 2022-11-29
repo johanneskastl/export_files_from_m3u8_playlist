@@ -9,6 +9,33 @@ command -v dos2unix > /dev/null || {
     exit 7
 } 
 
+# define copy command
+cp_command='cp -a'
+
+# parse arguments
+while getopts vl opt
+do
+    case ${opt} in
+        l)
+            # add cp option -l
+            cp_command+='l'
+        ;;
+
+        v)
+            # add cp option -v
+            cp_command+='v'
+        ;;
+
+        *)
+            echo "Unknown option, aborting..."
+            exit 9
+        ;;
+
+    esac
+done
+
+# drop all processed options
+shift $(( OPTIND - 1 ))
 
 # if there is more than one argument left, abort
 [[ "$#" == 1 ]] || {
@@ -61,7 +88,7 @@ do
     echo "Working on ${music_file}"
     if [[ -f "${music_file}" ]] 
     then
-        [[ -f "./${playlist_folder_name}/$(basename "${music_file}")" ]] || cp -av "${music_file}" "./${playlist_folder_name}"
+        [[ -f "./${playlist_folder_name}/$(basename "${music_file}")" ]] || "${cp_command}" "${music_file}" "./${playlist_folder_name}"
     else
         echo "Error, file ${music_file} not found..."
         #exit 21
