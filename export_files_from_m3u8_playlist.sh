@@ -60,11 +60,11 @@ echo ""
 echo "Working on playlist ${playlist_name}"
 playlist_folder_name="${playlist_name%.m3u8}"
 
-echo "Creating the playlist folder ${playlist_folder_name}"
 if [[ -d "./${playlist_folder_name}" ]] 
 then
     echo "Playlist folder ${playlist_folder_name} already exists"
 else
+    echo "Creating the playlist folder ${playlist_folder_name}"
     mkdir "./${playlist_folder_name}" || {
         echo "Error when creating the playlist folder ${playlist_folder_name}"
         exit 17
