@@ -87,22 +87,31 @@ echo "Found referenced files:"
 echo "${referenced_files}"
 echo ""
 
-# loop over lines from playlist
-while read -r music_file
-do
+if [[ "${enable_sorting}" == "true" ]]
+then
 
-    echo "---"
-    echo "Working on ${music_file}"
-    if [[ -f "${music_file}" ]] 
-    then
-        # copy file, if not yet present
-        [[ -f "./${playlist_folder_name}/$(basename "${music_file}")" ]] || "${cp_command}" "${music_file}" "./${playlist_folder_name}"
-    else
-        echo "Error, file ${music_file} not found..."
-        #exit 21
-    fi
+    echo "Sorting"
 
-done <<< "${referenced_files}"
+else
+
+    # loop over lines from playlist
+    while read -r music_file
+    do
+
+        echo "---"
+        echo "Working on ${music_file}"
+        if [[ -f "${music_file}" ]]
+        then
+            # copy file, if not yet present
+            [[ -f "./${playlist_folder_name}/$(basename "${music_file}")" ]] || "${cp_command}" "${music_file}" "./${playlist_folder_name}"
+        else
+            echo "Error, file ${music_file} not found..."
+            exit 21
+        fi
+
+    done <<< "${referenced_files}"
+
+fi # if-condition sorting yes/no
 
 echo ""
 
