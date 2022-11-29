@@ -135,6 +135,7 @@ do
 
 done <<< "${referenced_files}"
 
+echo "---"
 echo ""
 
 exit 0
