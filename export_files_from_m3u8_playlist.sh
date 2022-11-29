@@ -90,6 +90,13 @@ echo ""
 # store the number of files found
 number_of_files="$(wc -l <<<"${referenced_files}")"
 
+if [[ "${number_of_files}" -lt 100 ]]
+then
+    printf_format_string='%02d'
+else
+    printf_format_string='%03d'
+fi
+
 [[ "${enable_sorting}" == "true" ]] && echo "Copying while keeping the sorting"
 list_index=1
 
@@ -99,19 +106,14 @@ do
 
     if [[ "${enable_sorting}" == "true" ]]
     then
-        if [[ "${number_of_files}" -lt 100 ]]
-        then
-            prefix="$(printf "%02d" "${list_index}")_"
-        else
-            prefix="$(printf "%03d" "${list_index}")_"
-        fi
+        prefix="$(printf "${printf_format_string}" "${list_index}" )_"
     else
         prefix=''
     fi
 
     echo "---"
     echo "Working on ${music_file}"
-    [[ "${enable_sorting}" == "true" ]] && echo "Entry number: ${list_index}"
+    [[ "${enable_sorting}" == "true" ]] && echo "Entry number: $(printf "${printf_format_string}" "${list_index}")"
 
     if [[ -f "${music_file}" ]]
     then
