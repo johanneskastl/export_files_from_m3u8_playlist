@@ -87,6 +87,9 @@ echo "Found referenced files:"
 echo "${referenced_files}"
 echo ""
 
+# store the number of files found
+number_of_files="$(wc -l <<<"${referenced_files}")"
+
 if [[ "${enable_sorting}" == "true" ]]
 then
 
