@@ -129,7 +129,10 @@ do
             echo "File ${prefix}$(basename "${music_file}") already present"
         else
             # copy file, if not yet present
-            ${cp_command} "${music_file}" "./${playlist_folder_name}/${prefix}$(basename "${music_file}")"
+            ${cp_command} "${music_file}" "./${playlist_folder_name}/${prefix}$(basename "${music_file}")" || {
+                echo "Error when copying file ${music_file}"
+                exit 23
+            }
         fi
     else
         echo "Error, file ${music_file} not found..."
