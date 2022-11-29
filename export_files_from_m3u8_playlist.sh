@@ -94,7 +94,12 @@ if [[ "${number_of_files}" -lt 100 ]]
 then
     printf_format_string='%02d'
 else
-    printf_format_string='%03d'
+    if [[ "${number_of_files}" -lt 1000 ]]
+    then
+        printf_format_string='%03d'
+    else
+        printf_format_string='%04d'
+    fi
 fi
 
 [[ "${enable_sorting}" == "true" ]] && echo "Copying while keeping the sorting"
