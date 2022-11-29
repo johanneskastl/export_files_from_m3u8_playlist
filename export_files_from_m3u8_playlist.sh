@@ -3,6 +3,21 @@
 # propagate errors even through pipes
 set -o pipefail
 
+function usage() {
+    echo "Usage:"
+    echo "$(basename "$0") [-h] [-v] [-l] [-s] playlist_file.m3u8"
+    echo ""
+    echo "-h => show this help"
+    echo "-v => enable verbose copying"
+    echo "-l => enable hardlinking instead of copying"
+    echo "-s => name target file according to playlist position"
+    echo "      first entry 'nothing_compares.mp3' becomes '01_nothing_compares.mp3'"
+    echo "      or '001_nothing_compares.mp3' etc. depending on the total number of"
+    echo "      entries in the playlist"
+    echo ""
+    exit 0
+}
+
 # this script requires dos2unix
 command -v dos2unix > /dev/null || {
     echo "Command dos2unix not found, aborting..."
@@ -13,7 +28,7 @@ command -v dos2unix > /dev/null || {
 cp_command='cp -a'
 
 # parse arguments
-while getopts vls opt
+while getopts hvls opt
 do
     case ${opt} in
         l)
@@ -28,6 +43,10 @@ do
 
         s)
             enable_sorting='true'
+        ;;
+
+        h)
+            usage
         ;;
 
         *)
