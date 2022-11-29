@@ -106,6 +106,7 @@ do
 
     if [[ "${enable_sorting}" == "true" ]]
     then
+        # shellcheck disable=SC2059
         prefix="$(printf "${printf_format_string}" "${list_index}" )_"
     else
         prefix=''
@@ -113,6 +114,7 @@ do
 
     echo "---"
     echo "Working on ${music_file}"
+    # shellcheck disable=SC2059
     [[ "${enable_sorting}" == "true" ]] && echo "Entry number: $(printf "${printf_format_string}" "${list_index}")"
 
     if [[ -f "${music_file}" ]]
