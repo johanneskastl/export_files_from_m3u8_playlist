@@ -43,6 +43,7 @@ shift $(( OPTIND - 1 ))
     exit 13
 }
 
+# set variable playlist_name to the only remaining argument
 playlist_name="$1"
 
 # if the given file does not exist, abort
@@ -72,6 +73,7 @@ fi
 #
 referenced_files="$(grep -v "^#" "${playlist_name}" | dos2unix)"
 
+# error out if no files were given inside the playlist
 [[ -n "${referenced_files}" ]] || {
     echo "No referenced files found. Aborting..."
     exit 19    
@@ -81,6 +83,7 @@ echo "Found referenced files:"
 echo "${referenced_files}"
 echo ""
 
+# loop over lines from playlist
 while read -r music_file
 do
 
@@ -88,6 +91,7 @@ do
     echo "Working on ${music_file}"
     if [[ -f "${music_file}" ]] 
     then
+        # copy file, if not yet present
         [[ -f "./${playlist_folder_name}/$(basename "${music_file}")" ]] || "${cp_command}" "${music_file}" "./${playlist_folder_name}"
     else
         echo "Error, file ${music_file} not found..."
