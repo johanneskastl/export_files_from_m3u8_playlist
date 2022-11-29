@@ -3,12 +3,14 @@
 # propagate errors even through pipes
 set -o pipefail
 
+# this script requires dos2unix
 command -v dos2unix > /dev/null || {
     echo "Command dos2unix not found, aborting..."
     exit 7
 } 
 
 
+# if there is more than one argument left, abort
 [[ "$#" == 1 ]] || {
     echo "Please give playlist name as only argument"
     exit 13
@@ -16,6 +18,7 @@ command -v dos2unix > /dev/null || {
 
 playlist_name="$1"
 
+# if the given file does not exist, abort
 [[ -e "${playlist_name}" ]] || {
     echo "Playlist file ${playlist_name} does not exist, aborting..."
     exit 15
