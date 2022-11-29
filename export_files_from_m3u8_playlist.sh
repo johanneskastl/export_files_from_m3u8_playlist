@@ -103,7 +103,8 @@ else
         if [[ -f "${music_file}" ]]
         then
             # copy file, if not yet present
-            [[ -f "./${playlist_folder_name}/$(basename "${music_file}")" ]] || "${cp_command}" "${music_file}" "./${playlist_folder_name}"
+            [[ -f "./${playlist_folder_name}/$(basename "${music_file}")" ]] || \
+                ${cp_command} "${music_file}" "./${playlist_folder_name}"
         else
             echo "Error, file ${music_file} not found..."
             exit 21
