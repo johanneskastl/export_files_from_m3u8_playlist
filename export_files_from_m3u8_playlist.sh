@@ -124,9 +124,13 @@ do
 
     if [[ -f "${music_file}" ]]
     then
-        # copy file, if not yet present
-        [[ -f "./${playlist_folder_name}/${prefix}$(basename "${music_file}")" ]] || \
+        if [[ -f "./${playlist_folder_name}/${prefix}$(basename "${music_file}")" ]]
+        then
+            echo "File ${prefix}$(basename "${music_file}") already present"
+        else
+            # copy file, if not yet present
             ${cp_command} "${music_file}" "./${playlist_folder_name}/${prefix}$(basename "${music_file}")"
+        fi
     else
         echo "Error, file ${music_file} not found..."
         exit 21
